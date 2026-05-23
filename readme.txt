@@ -1,5 +1,5 @@
 === Analytics for OpenPanel ===
-Contributors: steffenkt
+Contributors: steffenka
 Tags: analytics, tracking, openpanel, privacy, self-hosted
 Requires at least: 6.0
 Tested up to: 7.0
