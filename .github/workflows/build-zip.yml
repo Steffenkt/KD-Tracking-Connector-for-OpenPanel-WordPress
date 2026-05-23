@@ -43,6 +43,7 @@ jobs:
         run: |
           VERSION="${{ steps.meta.outputs.version }}"
           ZIP_NAME="analytics-for-openpanel-${VERSION}.zip"
+          ZIP_PLAIN="analytics-for-openpanel.zip"
 
           git archive \
             --format=zip \
@@ -51,8 +52,11 @@ jobs:
             HEAD \
             -o "${ZIP_NAME}"
 
+          cp "${ZIP_NAME}" "${ZIP_PLAIN}"
+
           echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
-          echo "Built: $ZIP_NAME"
+          echo "zip_plain=$ZIP_PLAIN" >> $GITHUB_OUTPUT
+          echo "Built: $ZIP_NAME + $ZIP_PLAIN"
 
       # -----------------------------------------------------------------------
       # Delete existing release + tag for this version (overwrite behaviour)
@@ -79,4 +83,6 @@ jobs:
 
             ---
             Install by uploading `${{ steps.zip.outputs.zip_name }}` via **Plugins → Add New → Upload Plugin**.
-          files: ${{ steps.zip.outputs.zip_name }}
+          files: |
+            ${{ steps.zip.outputs.zip_name }}
+            ${{ steps.zip.outputs.zip_plain }}
