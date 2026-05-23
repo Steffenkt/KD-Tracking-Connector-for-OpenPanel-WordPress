@@ -1,0 +1,4 @@
+# Files excluded from the plugin ZIP (git archive --worktree-attributes)
+README.md           export-ignore
+.gitattributes      export-ignore
+.github/            export-ignore

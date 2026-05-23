@@ -1,0 +1,82 @@
+name: Build Plugin ZIP
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # Read version (Stable tag) and changelog from readme.txt
+      # -----------------------------------------------------------------------
+      - name: Read version and changelog from readme.txt
+        id: meta
+        run: |
+          VERSION=$(grep -m1 "^Stable tag:" readme.txt | sed 's/Stable tag:[[:space:]]*//')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+          # Extract bullet points for this version from the Changelog section
+          CHANGELOG=$(awk "/^= ${VERSION} =/{found=1; next} found && /^= [0-9]/{exit} found && NF{print}" readme.txt)
+          {
+            echo "changelog<<EOF"
+            echo "$CHANGELOG"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+          echo "Detected version: $VERSION"
+
+      # -----------------------------------------------------------------------
+      # Build ZIP via git archive – .gitattributes controls what is excluded
+      # -----------------------------------------------------------------------
+      - name: Build plugin ZIP
+        id: zip
+        run: |
+          VERSION="${{ steps.meta.outputs.version }}"
+          ZIP_NAME="analytics-for-openpanel-${VERSION}.zip"
+
+          git archive \
+            --format=zip \
+            --prefix=analytics-for-openpanel/ \
+            --worktree-attributes \
+            HEAD \
+            -o "${ZIP_NAME}"
+
+          echo "zip_name=$ZIP_NAME" >> $GITHUB_OUTPUT
+          echo "Built: $ZIP_NAME"
+
+      # -----------------------------------------------------------------------
+      # Delete existing release + tag for this version (overwrite behaviour)
+      # -----------------------------------------------------------------------
+      - name: Delete existing release for this version (if any)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="v${{ steps.meta.outputs.version }}"
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+
+      # -----------------------------------------------------------------------
+      # Create GitHub Release with ZIP and changelog from readme.txt
+      # -----------------------------------------------------------------------
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.meta.outputs.version }}
+          name: Analytics for OpenPanel v${{ steps.meta.outputs.version }}
+          body: |
+            ## What's new in v${{ steps.meta.outputs.version }}
+
+            ${{ steps.meta.outputs.changelog }}
+
+            ---
+            Install by uploading `${{ steps.zip.outputs.zip_name }}` via **Plugins → Add New → Upload Plugin**.
+          files: ${{ steps.zip.outputs.zip_name }}
