@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Tracking Connector for OpenPanel
- * Plugin URI:        https://github.com/Steffenkt/Analytics-for-OpenPanel-WordPress
+ * Plugin URI:        https://github.com/Steffenkt/Tracking-Connector-for-OpenPanel-WordPress
  * Description:       Integrates OpenPanel Analytics into WordPress. Supports self-hosted instances and the official cloud. Configurable under Settings → OpenPanel.
  * Version:           1.0.1
  * Requires at least: 6.0

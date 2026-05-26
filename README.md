@@ -206,4 +206,4 @@ window.op('setGlobalProperties', {
 - [OpenPanel Documentation – Script Tag](https://openpanel.dev/docs/sdks/script)
 - [OpenPanel Self-Hosting Guide](https://openpanel.dev/docs/get-started/install-openpanel)
 - [Session Replay](https://openpanel.dev/docs/session-replay)
-- [GitHub Repository](https://github.com/Steffenkt/Analytics-for-OpenPanel-WordPress)
+- [GitHub Repository](https://github.com/Steffenkt/Tracking-Connector-for-OpenPanel-WordPress)

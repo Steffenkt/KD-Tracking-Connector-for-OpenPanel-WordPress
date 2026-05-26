@@ -108,7 +108,7 @@ This plugin integrates with **OpenPanel Analytics**, an open-source web analytic
 * OpenPanel website: https://openpanel.dev
 * OpenPanel source code (MIT licence): https://github.com/openpanel-dev/openpanel
 * OpenPanel privacy information: https://openpanel.dev/privacy
-* Plugin repository: https://github.com/Steffenkt/Analytics-for-OpenPanel-WordPress
+* Plugin repository: https://github.com/Steffenkt/Tracking-Connector-for-OpenPanel-WordPress
 
 = JavaScript Source Files =
 
