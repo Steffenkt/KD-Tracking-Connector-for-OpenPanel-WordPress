@@ -1,10 +1,10 @@
-=== Analytics for OpenPanel ===
+=== Tracking Connector for OpenPanel ===
 Contributors: steffenka
 Tags: analytics, tracking, openpanel, privacy, self-hosted
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Privacy-friendly web analytics with OpenPanel – Self-Hosted and Cloud, fully c
 
 == Description ==
 
-**Analytics for OpenPanel** seamlessly integrates [OpenPanel Analytics](https://openpanel.dev) into WordPress – as a standalone plugin, independent of the active theme.
+**Tracking Connector for OpenPanel** seamlessly integrates [OpenPanel Analytics](https://openpanel.dev) into WordPress – as a standalone plugin, independent of the active theme.
 
 OpenPanel is an open-source alternative to Google Analytics that can be fully self-hosted. This plugin supports both self-hosted instances and the official cloud service and is fully configurable via a dedicated admin settings page.
 
@@ -118,6 +118,11 @@ https://github.com/openpanel-dev/openpanel
 
 == Changelog ==
 
+= 1.0.1 =
+* Renamed plugin to "Tracking Connector for OpenPanel"
+* Changed slug to tracking-connector-for-openpanel
+* Replaced inline <script> output with wp_add_inline_script() via wp_enqueue_scripts
+
 = 1.0.0 =
 * Initial release
 * Admin settings page under Settings → OpenPanel
@@ -128,6 +133,9 @@ https://github.com/openpanel-dev/openpanel
 * Multilingual: German (source language) and English (en_US)
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Plugin renamed to "Tracking Connector for OpenPanel" with new slug tracking-connector-for-openpanel. Please re-activate the plugin after updating.
 
 = 1.0.0 =
 Initial release – no upgrade notes.

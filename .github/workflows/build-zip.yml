@@ -42,12 +42,12 @@ jobs:
         id: zip
         run: |
           VERSION="${{ steps.meta.outputs.version }}"
-          ZIP_NAME="analytics-for-openpanel-${VERSION}.zip"
-          ZIP_PLAIN="analytics-for-openpanel.zip"
+          ZIP_NAME="tracking-connector-for-openpanel-${VERSION}.zip"
+          ZIP_PLAIN="tracking-connector-for-openpanel.zip"
 
           git archive \
             --format=zip \
-            --prefix=analytics-for-openpanel/ \
+            --prefix=tracking-connector-for-openpanel/ \
             --worktree-attributes \
             HEAD \
             -o "${ZIP_NAME}"
@@ -75,7 +75,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.meta.outputs.version }}
-          name: Analytics for OpenPanel v${{ steps.meta.outputs.version }}
+          name: Tracking Connector for OpenPanel v${{ steps.meta.outputs.version }}
           body: |
             ## What's new in v${{ steps.meta.outputs.version }}
 

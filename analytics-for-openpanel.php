@@ -1,21 +1,21 @@
 <?php
 /**
- * Plugin Name:       Analytics for OpenPanel
+ * Plugin Name:       Tracking Connector for OpenPanel
  * Plugin URI:        https://github.com/Steffenkt/Analytics-for-OpenPanel-WordPress
  * Description:       Integrates OpenPanel Analytics into WordPress. Supports self-hosted instances and the official cloud. Configurable under Settings → OpenPanel.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 6.0
  * Requires PHP:      8.0
  * Author:            Steffen Kaster
  * Author URI:        https://github.com/Steffenkt
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       analytics-for-openpanel
+ * Text Domain:       tracking-connector-for-openpanel
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'OPSH_VERSION',    '1.0.0' );
+define( 'OPSH_VERSION',    '1.0.1' );
 define( 'OPSH_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 // ---------------------------------------------------------------------------
@@ -60,10 +60,10 @@ add_action( 'admin_menu', 'opsh_admin_menu' );
 
 function opsh_admin_menu() {
     add_options_page(
-        __( 'OpenPanel Analytics', 'analytics-for-openpanel' ),
-        __( 'OpenPanel', 'analytics-for-openpanel' ),
+        __( 'OpenPanel Analytics', 'tracking-connector-for-openpanel' ),
+        __( 'OpenPanel', 'tracking-connector-for-openpanel' ),
         'manage_options',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_settings_page'
     );
 }
@@ -79,161 +79,161 @@ function opsh_admin_init() {
     // --- General ---
     add_settings_section(
         'opsh_section_general',
-        __( 'Allgemein', 'analytics-for-openpanel' ),
+        __( 'Allgemein', 'tracking-connector-for-openpanel' ),
         '__return_false',
-        'analytics-for-openpanel'
+        'tracking-connector-for-openpanel'
     );
 
     register_setting( 'opsh_settings_group', 'opsh_enabled',   array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_enabled',
-        __( 'OpenPanel aktivieren', 'analytics-for-openpanel' ),
+        __( 'OpenPanel aktivieren', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_general',
-        array( 'key' => 'opsh_enabled', 'description' => __( 'Tracking-Script im Frontend ausgeben.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_enabled', 'description' => __( 'Tracking-Script im Frontend ausgeben.', 'tracking-connector-for-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_client_id', array( 'sanitize_callback' => 'sanitize_text_field' ) );
     add_settings_field(
         'opsh_client_id',
-        __( 'Client ID', 'analytics-for-openpanel' ),
+        __( 'Client ID', 'tracking-connector-for-openpanel' ),
         'opsh_field_text',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_general',
-        array( 'key' => 'opsh_client_id', 'type' => 'text', 'description' => __( 'Die Client-ID deiner OpenPanel-Anwendung.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_client_id', 'type' => 'text', 'description' => __( 'Die Client-ID deiner OpenPanel-Anwendung.', 'tracking-connector-for-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_api_url', array( 'sanitize_callback' => 'esc_url_raw' ) );
     add_settings_field(
         'opsh_api_url',
-        __( 'API-URL (Self-Hosted)', 'analytics-for-openpanel' ),
+        __( 'API-URL (Self-Hosted)', 'tracking-connector-for-openpanel' ),
         'opsh_field_text',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_general',
-        array( 'key' => 'opsh_api_url', 'type' => 'url', 'description' => __( 'Nur bei Self-Hosting angeben, z.&nbsp;B. https://openpanel.example.com/api. Leer lassen für die offizielle Cloud.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_api_url', 'type' => 'url', 'description' => __( 'Nur bei Self-Hosting angeben, z.&nbsp;B. https://openpanel.example.com/api. Leer lassen für die offizielle Cloud.', 'tracking-connector-for-openpanel' ) )
     );
 
     // --- Script delivery ---
     add_settings_section(
         'opsh_section_script',
-        __( 'Script-Auslieferung', 'analytics-for-openpanel' ),
+        __( 'Script-Auslieferung', 'tracking-connector-for-openpanel' ),
         '__return_false',
-        'analytics-for-openpanel'
+        'tracking-connector-for-openpanel'
     );
 
     register_setting( 'opsh_settings_group', 'opsh_script_local', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_script_local',
-        __( 'op1.js lokal ausliefern', 'analytics-for-openpanel' ),
+        __( 'op1.js lokal ausliefern', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_script',
-        array( 'key' => 'opsh_script_local', 'description' => __( 'Script aus dem Plugin-Ordner laden (kein externer Request zu openpanel.dev). Deaktiviert: Script wird von https://openpanel.dev/op1.js geladen.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_script_local', 'description' => __( 'Script aus dem Plugin-Ordner laden (kein externer Request zu openpanel.dev). Deaktiviert: Script wird von https://openpanel.dev/op1.js geladen.', 'tracking-connector-for-openpanel' ) )
     );
 
     // --- Tracking options ---
     add_settings_section(
         'opsh_section_tracking',
-        __( 'Tracking-Optionen', 'analytics-for-openpanel' ),
+        __( 'Tracking-Optionen', 'tracking-connector-for-openpanel' ),
         '__return_false',
-        'analytics-for-openpanel'
+        'tracking-connector-for-openpanel'
     );
 
     register_setting( 'opsh_settings_group', 'opsh_track_screen_views', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_track_screen_views',
-        __( 'Seitenaufrufe (trackScreenViews)', 'analytics-for-openpanel' ),
+        __( 'Seitenaufrufe (trackScreenViews)', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_tracking',
-        array( 'key' => 'opsh_track_screen_views', 'description' => __( 'Seitenaufrufe automatisch tracken.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_track_screen_views', 'description' => __( 'Seitenaufrufe automatisch tracken.', 'tracking-connector-for-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_track_outgoing_links', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_track_outgoing_links',
-        __( 'Ausgehende Links (trackOutgoingLinks)', 'analytics-for-openpanel' ),
+        __( 'Ausgehende Links (trackOutgoingLinks)', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_tracking',
-        array( 'key' => 'opsh_track_outgoing_links', 'description' => __( 'Klicks auf externe Links automatisch tracken.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_track_outgoing_links', 'description' => __( 'Klicks auf externe Links automatisch tracken.', 'tracking-connector-for-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_track_attributes', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_track_attributes',
-        __( 'HTML-Attribute (trackAttributes)', 'analytics-for-openpanel' ),
+        __( 'HTML-Attribute (trackAttributes)', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_tracking',
-        array( 'key' => 'opsh_track_attributes', 'description' => __( 'Tracking über data-track-Attribute an HTML-Elementen.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_track_attributes', 'description' => __( 'Tracking über data-track-Attribute an HTML-Elementen.', 'tracking-connector-for-openpanel' ) )
     );
 
     // --- Session Replay ---
     add_settings_section(
         'opsh_section_replay',
-        __( 'Session Replay', 'analytics-for-openpanel' ),
+        __( 'Session Replay', 'tracking-connector-for-openpanel' ),
         '__return_false',
-        'analytics-for-openpanel'
+        'tracking-connector-for-openpanel'
     );
 
     register_setting( 'opsh_settings_group', 'opsh_session_replay', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_session_replay',
-        __( 'Session Replay aktivieren', 'analytics-for-openpanel' ),
+        __( 'Session Replay aktivieren', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_replay',
-        array( 'key' => 'opsh_session_replay', 'description' => __( 'Mausbewegungen, Scrollverhalten und Klicks aufzeichnen.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_session_replay', 'description' => __( 'Mausbewegungen, Scrollverhalten und Klicks aufzeichnen.', 'tracking-connector-for-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_session_replay_mask_inputs', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_session_replay_mask_inputs',
-        __( 'Formularfelder maskieren (maskAllInputs)', 'analytics-for-openpanel' ),
+        __( 'Formularfelder maskieren (maskAllInputs)', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_replay',
-        array( 'key' => 'opsh_session_replay_mask_inputs', 'description' => __( 'Empfohlen: Verhindert, dass Eingaben in Formularfelder im Replay sichtbar sind.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_session_replay_mask_inputs', 'description' => __( 'Empfohlen: Verhindert, dass Eingaben in Formularfelder im Replay sichtbar sind.', 'tracking-connector-for-openpanel' ) )
     );
 
     // --- Privacy & Debug ---
     add_settings_section(
         'opsh_section_privacy',
-        __( 'Datenschutz &amp; Debug', 'analytics-for-openpanel' ),
+        __( 'Datenschutz &amp; Debug', 'tracking-connector-for-openpanel' ),
         '__return_false',
-        'analytics-for-openpanel'
+        'tracking-connector-for-openpanel'
     );
 
     register_setting( 'opsh_settings_group', 'opsh_no_track_logged_in', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_no_track_logged_in',
-        __( 'Eingeloggte Nutzer nicht tracken', 'analytics-for-openpanel' ),
+        __( 'Eingeloggte Nutzer nicht tracken', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_privacy',
-        array( 'key' => 'opsh_no_track_logged_in', 'description' => __( 'Admins und eingeloggte Benutzer werden nicht getrackt – verhindert verfälschte Statistiken.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_no_track_logged_in', 'description' => __( 'Admins und eingeloggte Benutzer werden nicht getrackt – verhindert verfälschte Statistiken.', 'tracking-connector-for-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_respect_dnt', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_respect_dnt',
-        __( 'Do Not Track (DNT) respektieren', 'analytics-for-openpanel' ),
+        __( 'Do Not Track (DNT) respektieren', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_privacy',
-        array( 'key' => 'opsh_respect_dnt', 'description' => __( 'Nutzer mit aktivem DNT-Browser-Header werden nicht getrackt.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_respect_dnt', 'description' => __( 'Nutzer mit aktivem DNT-Browser-Header werden nicht getrackt.', 'tracking-connector-for-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_disable_debug', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
     add_settings_field(
         'opsh_disable_debug',
-        __( 'Bei WP_DEBUG deaktivieren', 'analytics-for-openpanel' ),
+        __( 'Bei WP_DEBUG deaktivieren', 'tracking-connector-for-openpanel' ),
         'opsh_field_checkbox',
-        'analytics-for-openpanel',
+        'tracking-connector-for-openpanel',
         'opsh_section_privacy',
-        array( 'key' => 'opsh_disable_debug', 'description' => __( 'Kein Tracking auf lokalen/Staging-Umgebungen wenn WP_DEBUG aktiv ist.', 'analytics-for-openpanel' ) )
+        array( 'key' => 'opsh_disable_debug', 'description' => __( 'Kein Tracking auf lokalen/Staging-Umgebungen wenn WP_DEBUG aktiv ist.', 'tracking-connector-for-openpanel' ) )
     );
 }
 
@@ -251,8 +251,8 @@ function opsh_settings_page() {
         <form method="post" action="options.php">
             <?php
             settings_fields( 'opsh_settings_group' );
-            do_settings_sections( 'analytics-for-openpanel' );
-            submit_button( __( 'Änderungen speichern', 'analytics-for-openpanel' ) );
+            do_settings_sections( 'tracking-connector-for-openpanel' );
+            submit_button( __( 'Änderungen speichern', 'tracking-connector-for-openpanel' ) );
             ?>
         </form>
     </div>
@@ -304,7 +304,7 @@ function opsh_sanitize_bool( $value ) {
 // 8. Output script in frontend
 // ---------------------------------------------------------------------------
 
-add_action( 'wp_head', 'opsh_inject_script', 5 );
+add_action( 'wp_enqueue_scripts', 'opsh_inject_script' );
 
 function opsh_inject_script() {
 
@@ -365,12 +365,9 @@ function opsh_inject_script() {
     } else {
         $init_call = "window.op('init', " . $options_json . ");";
     }
-    ?>
-<script>
-  window.op=window.op||function(){var n=[];return new Proxy(function(){arguments.length&&n.push([].slice.call(arguments))},{get:function(t,r){return"q"===r?n:function(){n.push([r].concat([].slice.call(arguments)))}},has:function(t,r){return"q"===r}});}();
-  <?php echo $init_call; // phpcs:ignore WordPress.Security.EscapeOutput -- init_call is built from wp_json_encode and a hardcoded JS string ?>
-</script>
-    <?php
+
+    // phpcs:ignore WordPress.Security.EscapeOutput -- init_call is built from wp_json_encode and a hardcoded JS string
+    $inline_js = "window.op=window.op||function(){var n=[];return new Proxy(function(){arguments.length&&n.push([].slice.call(arguments))},{get:function(t,r){return\"q\"===r?n:function(){n.push([r].concat([].slice.call(arguments)))}},has:function(t,r){return\"q\"===r}});}();\n" . $init_call;
 
     // Load op1.js from the plugin folder or from CDN
     if ( $script_local ) {
@@ -381,7 +378,7 @@ function opsh_inject_script() {
         $version    = null;
     }
 
-    wp_enqueue_script(
+    wp_register_script(
         'opsh-tracking',
         $script_url,
         array(),
@@ -391,4 +388,7 @@ function opsh_inject_script() {
             'in_footer' => false,
         )
     );
+
+    wp_add_inline_script( 'opsh-tracking', $inline_js, 'before' );
+    wp_enqueue_script( 'opsh-tracking' );
 }
