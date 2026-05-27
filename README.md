@@ -1,4 +1,4 @@
-﻿# Analytics for OpenPanel – WordPress Plugin
+﻿# KD Tracking Connector for OpenPanel – WordPress Plugin
 
 A WordPress plugin for privacy-friendly web analytics integration with [OpenPanel](https://openpanel.dev) – as a standalone plugin, independent of the active theme.
 
@@ -21,7 +21,7 @@ A WordPress plugin for privacy-friendly web analytics integration with [OpenPane
 
 ## Installation
 
-1. Upload the plugin folder to `/wp-content/plugins/analytics-for-openpanel/`
+1. Upload the plugin folder to `/wp-content/plugins/kd-tracking-connector-openpanel/`
 2. Activate the plugin via **Plugins → Installed Plugins**
 3. Configure under **Settings → OpenPanel**
 
@@ -63,7 +63,7 @@ A WordPress plugin for privacy-friendly web analytics integration with [OpenPane
   });
 </script>
 <!-- local: -->
-<script src="/wp-content/plugins/analytics-for-openpanel/assets/js/op1.js" defer></script>
+<script src="/wp-content/plugins/kd-tracking-connector-openpanel/assets/js/op1.js" defer></script>
 <!-- CDN: -->
 <script src="https://openpanel.dev/op1.js" defer async></script>
 ```
@@ -96,13 +96,13 @@ curl -o assets/js/op1-replay.js https://openpanel.dev/op1-replay.js
 
 | File | Purpose |
 |---|---|
-| `analytics-for-openpanel.php` | Main plugin file: admin page, settings, script output |
+| `kd-tracking-connector-openpanel.php` | Main plugin file: admin page, settings, script output |
 | `uninstall.php` | Removes all plugin options on uninstall |
 | `assets/js/op1.js` | Local copy of the OpenPanel tracking script |
 | `assets/js/op1-replay.js` | Local copy of the session replay module (dynamically loaded by op1.js when replay is enabled) |
-| `languages/analytics-for-openpanel.pot` | Translation template |
-| `languages/analytics-for-openpanel-en_US.po` | English translation (source language: German) |
-| `languages/analytics-for-openpanel-en_US.mo` | Compiled English translation |
+| `languages/kd-tracking-connector-openpanel.pot` | Translation template |
+| `languages/kd-tracking-connector-openpanel-en_US.po` | English translation (source language: German) |
+| `languages/kd-tracking-connector-openpanel-en_US.mo` | Compiled English translation |
 
 ### Implementation Details
 
@@ -144,12 +144,12 @@ The plugin is fully translatable. Included languages:
 | German | *(source language)* | ✅ |
 | English | `en_US` | ✅ |
 
-New translations can be created from the template `languages/analytics-for-openpanel.pot`:
+New translations can be created from the template `languages/kd-tracking-connector-openpanel.pot`:
 
 ```bash
 # Create a new .po file based on the template, translate it,
 # then compile to a .mo file:
-msgfmt languages/analytics-for-openpanel-fr_FR.po -o languages/analytics-for-openpanel-fr_FR.mo
+msgfmt languages/kd-tracking-connector-openpanel-fr_FR.po -o languages/kd-tracking-connector-openpanel-fr_FR.mo
 ```
 
 ---
@@ -206,4 +206,4 @@ window.op('setGlobalProperties', {
 - [OpenPanel Documentation – Script Tag](https://openpanel.dev/docs/sdks/script)
 - [OpenPanel Self-Hosting Guide](https://openpanel.dev/docs/get-started/install-openpanel)
 - [Session Replay](https://openpanel.dev/docs/session-replay)
-- [GitHub Repository](https://github.com/Steffenkt/Tracking-Connector-for-OpenPanel-WordPress)
+- [GitHub Repository](https://github.com/Steffenkt/KD-Tracking-Connector-for-OpenPanel-WordPress)

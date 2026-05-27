@@ -1,10 +1,10 @@
-=== Tracking Connector for OpenPanel ===
+=== KD Tracking Connector for OpenPanel ===
 Contributors: steffenka
 Tags: analytics, tracking, openpanel, privacy, self-hosted
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Privacy-friendly web analytics with OpenPanel – Self-Hosted and Cloud, fully c
 
 == Description ==
 
-**Tracking Connector for OpenPanel** seamlessly integrates [OpenPanel Analytics](https://openpanel.dev) into WordPress – as a standalone plugin, independent of the active theme.
+**KD Tracking Connector for OpenPanel** seamlessly integrates [OpenPanel Analytics](https://openpanel.dev) into WordPress – as a standalone plugin, independent of the active theme.
 
 OpenPanel is an open-source alternative to Google Analytics that can be fully self-hosted. This plugin supports both self-hosted instances and the official cloud service and is fully configurable via a dedicated admin settings page.
 
@@ -46,7 +46,7 @@ All options are available under **Settings → OpenPanel**:
 
 == Installation ==
 
-1. Unzip the plugin archive and upload the folder to `/wp-content/plugins/analytics-for-openpanel/`
+1. Unzip the plugin archive and upload the folder to `/wp-content/plugins/kd-tracking-connector-openpanel/`
 2. Activate the plugin via **Plugins → Installed Plugins**
 3. Enter your Client ID under **Settings → OpenPanel** and enable the plugin
 
@@ -95,7 +95,7 @@ Via HTML attribute (when trackAttributes is active): `<button data-track="ticket
 
 = How do I add more languages? =
 
-The file `languages/analytics-for-openpanel.pot` serves as the translation template. Create a new `.po` file for the desired locale (e.g. `analytics-for-openpanel-fr_FR.po`), translate it, and compile it to a `.mo` file using `msgfmt`.
+The file `languages/kd-tracking-connector-openpanel.pot` serves as the translation template. Create a new `.po` file for the desired locale (e.g. `kd-tracking-connector-openpanel-fr_FR.po`), translate it, and compile it to a `.mo` file using `msgfmt`.
 
 == Third-Party Services ==
 
@@ -108,7 +108,7 @@ This plugin integrates with **OpenPanel Analytics**, an open-source web analytic
 * OpenPanel website: https://openpanel.dev
 * OpenPanel source code (MIT licence): https://github.com/openpanel-dev/openpanel
 * OpenPanel privacy information: https://openpanel.dev/privacy
-* Plugin repository: https://github.com/Steffenkt/Tracking-Connector-for-OpenPanel-WordPress
+* Plugin repository: https://github.com/Steffenkt/KD-Tracking-Connector-for-OpenPanel-WordPress
 
 = JavaScript Source Files =
 
@@ -118,10 +118,9 @@ https://github.com/openpanel-dev/openpanel
 
 == Changelog ==
 
-= 1.0.1 =
-* Renamed plugin to "Tracking Connector for OpenPanel"
-* Changed slug to tracking-connector-for-openpanel
-* Replaced inline <script> output with wp_add_inline_script() via wp_enqueue_scripts
+= 1.0.2 =
+* Plugin display name set to "KD Tracking Connector for OpenPanel", slug kd-tracking-connector-openpanel
+* Replaced inline script output with wp_add_inline_script() via wp_enqueue_scripts
 
 = 1.0.0 =
 * Initial release
@@ -134,8 +133,5 @@ https://github.com/openpanel-dev/openpanel
 
 == Upgrade Notice ==
 
-= 1.0.1 =
-Plugin renamed to "Tracking Connector for OpenPanel" with new slug tracking-connector-for-openpanel. Please re-activate the plugin after updating.
-
-= 1.0.0 =
-Initial release – no upgrade notes.
+= 1.0.2 =
+New slug kd-tracking-connector-openpanel. Please re-activate the plugin after updating.
