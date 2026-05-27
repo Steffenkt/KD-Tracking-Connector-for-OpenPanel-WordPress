@@ -91,7 +91,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_general',
-        array( 'key' => 'opsh_enabled', 'description' => __( 'Tracking-Script im Frontend ausgeben.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_enabled', 'default' => false, 'description' => __( 'Tracking-Script im Frontend ausgeben.', 'kd-tracking-connector-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_client_id', array( 'sanitize_callback' => 'sanitize_text_field' ) );
@@ -129,7 +129,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_script',
-        array( 'key' => 'opsh_script_local', 'description' => __( 'Script aus dem Plugin-Ordner laden (kein externer Request zu openpanel.dev). Deaktiviert: Script wird von https://openpanel.dev/op1.js geladen.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_script_local', 'default' => true, 'description' => __( 'Script aus dem Plugin-Ordner laden (kein externer Request zu openpanel.dev). Deaktiviert: Script wird von https://openpanel.dev/op1.js geladen.', 'kd-tracking-connector-openpanel' ) )
     );
 
     // --- Tracking options ---
@@ -147,7 +147,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_tracking',
-        array( 'key' => 'opsh_track_screen_views', 'description' => __( 'Seitenaufrufe automatisch tracken.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_track_screen_views', 'default' => true, 'description' => __( 'Seitenaufrufe automatisch tracken.', 'kd-tracking-connector-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_track_outgoing_links', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
@@ -157,7 +157,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_tracking',
-        array( 'key' => 'opsh_track_outgoing_links', 'description' => __( 'Klicks auf externe Links automatisch tracken.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_track_outgoing_links', 'default' => true, 'description' => __( 'Klicks auf externe Links automatisch tracken.', 'kd-tracking-connector-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_track_attributes', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
@@ -167,7 +167,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_tracking',
-        array( 'key' => 'opsh_track_attributes', 'description' => __( 'Tracking über data-track-Attribute an HTML-Elementen.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_track_attributes', 'default' => true, 'description' => __( 'Tracking über data-track-Attribute an HTML-Elementen.', 'kd-tracking-connector-openpanel' ) )
     );
 
     // --- Session Replay ---
@@ -185,7 +185,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_replay',
-        array( 'key' => 'opsh_session_replay', 'description' => __( 'Mausbewegungen, Scrollverhalten und Klicks aufzeichnen.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_session_replay', 'default' => false, 'description' => __( 'Mausbewegungen, Scrollverhalten und Klicks aufzeichnen.', 'kd-tracking-connector-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_session_replay_mask_inputs', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
@@ -195,7 +195,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_replay',
-        array( 'key' => 'opsh_session_replay_mask_inputs', 'description' => __( 'Empfohlen: Verhindert, dass Eingaben in Formularfelder im Replay sichtbar sind.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_session_replay_mask_inputs', 'default' => true, 'description' => __( 'Empfohlen: Verhindert, dass Eingaben in Formularfelder im Replay sichtbar sind.', 'kd-tracking-connector-openpanel' ) )
     );
 
     // --- Privacy & Debug ---
@@ -213,7 +213,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_privacy',
-        array( 'key' => 'opsh_no_track_logged_in', 'description' => __( 'Admins und eingeloggte Benutzer werden nicht getrackt – verhindert verfälschte Statistiken.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_no_track_logged_in', 'default' => true, 'description' => __( 'Admins und eingeloggte Benutzer werden nicht getrackt – verhindert verfälschte Statistiken.', 'kd-tracking-connector-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_respect_dnt', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
@@ -223,7 +223,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_privacy',
-        array( 'key' => 'opsh_respect_dnt', 'description' => __( 'Nutzer mit aktivem DNT-Browser-Header werden nicht getrackt.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_respect_dnt', 'default' => true, 'description' => __( 'Nutzer mit aktivem DNT-Browser-Header werden nicht getrackt.', 'kd-tracking-connector-openpanel' ) )
     );
 
     register_setting( 'opsh_settings_group', 'opsh_disable_debug', array( 'sanitize_callback' => 'opsh_sanitize_bool' ) );
@@ -233,7 +233,7 @@ function opsh_admin_init() {
         'opsh_field_checkbox',
         'kd-tracking-connector-openpanel',
         'opsh_section_privacy',
-        array( 'key' => 'opsh_disable_debug', 'description' => __( 'Kein Tracking auf lokalen/Staging-Umgebungen wenn WP_DEBUG aktiv ist.', 'kd-tracking-connector-openpanel' ) )
+        array( 'key' => 'opsh_disable_debug', 'default' => true, 'description' => __( 'Kein Tracking auf lokalen/Staging-Umgebungen wenn WP_DEBUG aktiv ist.', 'kd-tracking-connector-openpanel' ) )
     );
 }
 
@@ -264,9 +264,10 @@ function opsh_settings_page() {
 // ---------------------------------------------------------------------------
 
 function opsh_field_checkbox( $args ) {
-    $key   = $args['key'];
-    $value = (bool) get_option( $key );
-    $desc  = isset( $args['description'] ) ? $args['description'] : '';
+    $key     = $args['key'];
+    $default = isset( $args['default'] ) ? (bool) $args['default'] : false;
+    $value   = (bool) get_option( $key, $default );
+    $desc    = isset( $args['description'] ) ? $args['description'] : '';
     printf(
         '<input type="hidden" name="%1$s" value="0" />' .
         '<label><input type="checkbox" id="%1$s" name="%1$s" value="1" %2$s /> %3$s</label>',
