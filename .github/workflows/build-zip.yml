@@ -18,6 +18,8 @@ jobs:
       github.event.workflow_run.conclusion == 'success'
     permissions:
       contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
