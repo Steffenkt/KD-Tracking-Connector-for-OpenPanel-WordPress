@@ -201,9 +201,77 @@ window.op('setGlobalProperties', {
 
 ---
 
+## CI/CD & Release Process
+
+### GitHub Actions Workflows
+
+| Workflow | Trigger | Aufgabe |
+|---|---|---|
+| `build-zip.yml` | Push auf `main` | Erstellt GitHub Release + Plugin-ZIP |
+| `deploy-wporg.yml` | Push auf `main` + manuell | Deployed auf WordPress.org SVN |
+
+Beide Workflows laufen bei jedem Push auf `main` parallel.
+
+### WordPress.org SVN-Struktur
+
+Das WordPress.org-Plugin-Verzeichnis nutzt SVN mit drei festen Ordnern:
+
+```
+https://plugins.svn.wordpress.org/kd-tracking-connector-openpanel/
+├── trunk/          ← aktueller Stand (= Inhalt dieses Repos, ohne export-ignore-Dateien)
+├── tags/
+│   ├── 1.0.0/      ← automatisch via svn cp trunk → tags/VERSION angelegt
+│   └── 1.0.2/
+└── assets/         ← Icons, Banner, Screenshots (aus .wordpress-org/)
+```
+
+**Kein Plugin-Slug-Unterordner nötig** – die Dateien liegen direkt in `trunk/`, nicht in
+`trunk/kd-tracking-connector-openpanel/`. Der GitHub Action `10up/action-wordpress-plugin-deploy`
+handhabt die gesamte SVN-Struktur automatisch.
+
+**Versionstags** werden durch die Action via `svn cp trunk tags/$VERSION` angelegt –
+nie manuell anlegen. Tags sind idempotent: ein bereits existierender Tag wird nicht überschrieben.
+
+### Dateien und ihr SVN-Ziel
+
+| Quelle (GitHub) | SVN-Ziel | Gesteuert durch |
+|---|---|---|
+| Alle Dateien im Root (außer excluded) | `trunk/` | `.gitattributes` |
+| `.wordpress-org/*.png` | `assets/` | `ASSETS_DIR` in Workflow |
+| `README.md`, `.github/`, `.gitattributes`, `.wordpress-org/` | *excluded* | `.gitattributes export-ignore` |
+
+### Neue Version veröffentlichen
+
+1. Version in `kd-tracking-connector-openpanel.php` und `readme.txt` (`Stable tag:`) erhöhen
+2. Changelog in `readme.txt` ergänzen
+3. Auf `main` pushen → beide Workflows starten automatisch:
+   - GitHub Release wird erstellt/aktualisiert
+   - SVN `trunk` wird aktualisiert, neuer Tag `tags/X.Y.Z` wird angelegt
+
+### Required Secrets
+
+Einmalig unter **Repository → Settings → Secrets and variables → Actions** eintragen:
+
+| Secret | Wert |
+|---|---|
+| `SVN_USERNAME` | WordPress.org-Benutzername (Groß-/Kleinschreibung beachten) |
+| `SVN_PASSWORD` | SVN-Passwort von [profiles.wordpress.org](https://profiles.wordpress.org/me/profile/edit/group/3/) |
+
+### Dry Run
+
+Vor dem ersten echten Deploy empfiehlt sich ein Dry Run:
+**Actions → Deploy to WordPress.org → Run workflow → Dry Run: ✅**
+
+Dabei wird der gesamte SVN-Ablauf simuliert, ohne dass etwas committed wird.
+
+---
+
 ## References
 
 - [OpenPanel Documentation – Script Tag](https://openpanel.dev/docs/sdks/script)
 - [OpenPanel Self-Hosting Guide](https://openpanel.dev/docs/get-started/install-openpanel)
 - [Session Replay](https://openpanel.dev/docs/session-replay)
 - [GitHub Repository](https://github.com/Steffenkt/KD-Tracking-Connector-for-OpenPanel-WordPress)
+- [WordPress.org Plugin Directory](https://wordpress.org/plugins/kd-tracking-connector-openpanel/)
+- [WordPress SVN Guide](https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/)
+- [10up/action-wordpress-plugin-deploy](https://github.com/10up/action-wordpress-plugin-deploy)

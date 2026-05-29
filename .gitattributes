@@ -1,4 +1,6 @@
-# Files excluded from the plugin ZIP (git archive --worktree-attributes)
-README.md           export-ignore
-.gitattributes      export-ignore
-.github/            export-ignore
+# Files excluded from the plugin ZIP (git archive) and SVN deployment
+# Format: leading slash = anchored to repo root, no trailing slash on dirs
+/README.md          export-ignore
+/.gitattributes     export-ignore
+/.github            export-ignore
+/.wordpress-org     export-ignore

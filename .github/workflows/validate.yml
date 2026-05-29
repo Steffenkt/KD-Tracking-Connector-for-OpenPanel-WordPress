@@ -1,0 +1,70 @@
+name: Validate Plugin
+
+# ---------------------------------------------------------------------------
+# Läuft bei jedem Push auf main und bei Pull Requests.
+# Prüft:
+#   1. PHP-Syntax aller .php-Dateien
+#   2. Versions-Konsistenz: readme.txt "Stable tag" == "Version:" im Plugin-Header
+#   3. WordPress Plugin Check (PCP) – offizielle WP.org-Prüfregeln
+#
+# Der Deploy-Workflow (deploy-wporg.yml) startet nur wenn dieser Workflow
+# erfolgreich abgeschlossen wurde.
+# ---------------------------------------------------------------------------
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate Plugin
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # 1. PHP-Syntax – php -l auf alle .php-Dateien
+      # -----------------------------------------------------------------------
+      - name: PHP syntax check
+        run: |
+          find . -name "*.php" \
+            -not -path "./.git/*" \
+            | xargs -n1 php -l
+
+      # -----------------------------------------------------------------------
+      # 2. Versions-Konsistenz
+      #    readme.txt  "Stable tag: X.Y.Z"
+      #    plugin .php " * Version:  X.Y.Z"
+      #    → müssen identisch sein, sonst zeigt WP.org die falsche Version
+      # -----------------------------------------------------------------------
+      - name: Version consistency check
+        run: |
+          README_VER=$(grep -m1 "^Stable tag:" readme.txt \
+            | sed 's/Stable tag:[[:space:]]*//')
+          PLUGIN_VER=$(grep -m1 "^ \* Version:" kd-tracking-connector-openpanel.php \
+            | sed 's/.*Version:[[:space:]]*//')
+          echo "readme.txt  → $README_VER"
+          echo "plugin .php → $PLUGIN_VER"
+          if [ "$README_VER" != "$PLUGIN_VER" ]; then
+            echo "::error::Version mismatch – readme.txt Stable tag ($README_VER) != plugin header Version ($PLUGIN_VER)"
+            exit 1
+          fi
+          echo "✓ Versions match: $README_VER"
+
+      # -----------------------------------------------------------------------
+      # 3. WordPress Plugin Check (PCP)
+      #    Dieselben automatisierten Prüfregeln wie beim WordPress.org-Review
+      # -----------------------------------------------------------------------
+      - name: WordPress Plugin Check (PCP)
+        uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: '.'
+          checks: all

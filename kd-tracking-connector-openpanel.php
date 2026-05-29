@@ -3,7 +3,7 @@
  * Plugin Name:       KD Tracking Connector for OpenPanel
  * Plugin URI:        https://github.com/Steffenkt/KD-Tracking-Connector-for-OpenPanel-WordPress
  * Description:       Integrates OpenPanel Analytics into WordPress. Supports self-hosted instances and the official cloud. Configurable under Settings → OpenPanel.
- * Version:           1.0.2
+ * Version:           1.0.3
  * Requires at least: 6.0
  * Requires PHP:      8.0
  * Author:            Steffen Kaster
@@ -15,7 +15,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'OPSH_VERSION',    '1.0.2' );
+define( 'OPSH_VERSION',    '1.0.3' );
 define( 'OPSH_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 // ---------------------------------------------------------------------------

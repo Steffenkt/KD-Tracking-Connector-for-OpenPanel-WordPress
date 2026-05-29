@@ -1,0 +1,90 @@
+name: Deploy to WordPress.org
+
+# ---------------------------------------------------------------------------
+# Startet automatisch nachdem "Validate Plugin" erfolgreich durchgelaufen ist
+# (workflow_run), sowie manuell via Actions → "Run workflow" (mit Dry Run).
+#
+# Voraussetzungen (Repository → Settings → Secrets and variables → Actions):
+#   SVN_USERNAME  – WordPress.org-Benutzername (Groß-/Kleinschreibung beachten)
+#   SVN_PASSWORD  – SVN-Passwort aus https://profiles.wordpress.org/me/profile/edit/group/3/
+#
+# SVN-Ablauf pro Run:
+#   trunk   ← alle Repo-Dateien (ohne export-ignore-Einträge aus .gitattributes)
+#   assets  ← .wordpress-org/  (icon-128x128.png, banner, screenshots)
+#   tags    ← svn cp trunk → tags/{VERSION}  (idempotent – kein Überschreiben)
+#
+# Hinweis: Jeder SVN-Commit löst bei WordPress.org einen ZIP-Rebuild aus
+# (kann bis zu 6 h dauern). Tags werden nur einmalig angelegt.
+# ---------------------------------------------------------------------------
+
+on:
+  # Startet nur wenn validate.yml auf main erfolgreich war (nach build-zip)
+  workflow_run:
+    workflows: ["Build Plugin ZIP"]
+    branches:
+      - main
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry Run – Änderungen simulieren, NICHT nach SVN pushen"
+        required: false
+        default: false
+        type: boolean
+
+# Nur einen SVN-Job gleichzeitig zulassen; laufenden Job abbrechen wenn
+# ein neuerer Push kommt (SVN ist kein Entwicklungs-, sondern Release-System).
+concurrency:
+  group: svn-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: SVN Deploy → WordPress.org
+    runs-on: ubuntu-latest
+    # Bei workflow_run: nur deployen wenn Validate grün war.
+    # Bei workflow_dispatch: immer deployen (manuelle Ausführung ist bewusst).
+    if: >
+      github.event_name == 'workflow_dispatch' ||
+      github.event.workflow_run.conclusion == 'success'
+    permissions:
+      contents: read
+
+    steps:
+      # Bei workflow_run den exakt validierten Commit auschecken,
+      # nicht blind den aktuellen HEAD.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      # -----------------------------------------------------------------------
+      # Version aus readme.txt lesen (Stable tag)
+      # -----------------------------------------------------------------------
+      - name: Read version from readme.txt
+        id: meta
+        run: |
+          VERSION=$(grep -m1 "^Stable tag:" readme.txt | sed 's/Stable tag:[[:space:]]*//')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Deploying version: $VERSION"
+
+      # -----------------------------------------------------------------------
+      # WordPress.org SVN-Deployment via 10up/action-wordpress-plugin-deploy
+      #
+      # Was passiert:
+      #   trunk   ← alle Dateien aus dem Repo (ohne export-ignore-Einträge)
+      #   assets  ← Inhalt von .wordpress-org/ (icon-128x128.png, etc.)
+      #   tags    ← svn cp trunk → tags/$VERSION (idempotent, kein Überschreiben)
+      # -----------------------------------------------------------------------
+      - name: Deploy to WordPress.org Plugin SVN
+        uses: 10up/action-wordpress-plugin-deploy@v2
+        with:
+          # inputs.dry_run ist beim Push-Trigger undefined → explizit auf true prüfen
+          dry-run: ${{ inputs.dry_run == true }}
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: kd-tracking-connector-openpanel
+          VERSION: ${{ steps.meta.outputs.version }}
+          ASSETS_DIR: .wordpress-org
