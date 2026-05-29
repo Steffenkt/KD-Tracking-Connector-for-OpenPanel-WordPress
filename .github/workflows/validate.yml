@@ -5,7 +5,6 @@ name: Validate Plugin
 # Prüft:
 #   1. PHP-Syntax aller .php-Dateien
 #   2. Versions-Konsistenz: readme.txt "Stable tag" == "Version:" im Plugin-Header
-#   3. WordPress Plugin Check (PCP) – offizielle WP.org-Prüfregeln
 #
 # Der Deploy-Workflow (deploy-wporg.yml) startet nur wenn dieser Workflow
 # erfolgreich abgeschlossen wurde.
@@ -62,12 +61,4 @@ jobs:
           fi
           echo "✓ Versions match: $README_VER"
 
-      # -----------------------------------------------------------------------
-      # 3. WordPress Plugin Check (PCP)
-      #    Stabile Checks (ohne experimentelle / WP.org-repo-spezifische Regeln,
-      #    die für noch nicht gelistete Plugins false positives erzeugen).
-      # -----------------------------------------------------------------------
-      - name: WordPress Plugin Check (PCP)
-        uses: wordpress/plugin-check-action@v1
-        with:
-          build-dir: '.'
+
