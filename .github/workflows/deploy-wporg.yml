@@ -78,7 +78,7 @@ jobs:
       #   tags    ← svn cp trunk → tags/$VERSION (idempotent, kein Überschreiben)
       # -----------------------------------------------------------------------
       - name: Deploy to WordPress.org Plugin SVN
-        uses: 10up/action-wordpress-plugin-deploy@v2
+        uses: 10up/action-wordpress-plugin-deploy@2.3.0
         with:
           # inputs.dry_run ist beim Push-Trigger undefined → explizit auf true prüfen
           dry-run: ${{ inputs.dry_run == true }}
