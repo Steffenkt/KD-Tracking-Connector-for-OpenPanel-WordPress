@@ -25,6 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    # Node.js 24 erzwingen – Node.js 20 wird ab 02.06.2026 nicht mehr unterstützt
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
@@ -61,10 +64,10 @@ jobs:
 
       # -----------------------------------------------------------------------
       # 3. WordPress Plugin Check (PCP)
-      #    Dieselben automatisierten Prüfregeln wie beim WordPress.org-Review
+      #    Stabile Checks (ohne experimentelle / WP.org-repo-spezifische Regeln,
+      #    die für noch nicht gelistete Plugins false positives erzeugen).
       # -----------------------------------------------------------------------
       - name: WordPress Plugin Check (PCP)
         uses: wordpress/plugin-check-action@v1
         with:
           build-dir: '.'
-          checks: all
